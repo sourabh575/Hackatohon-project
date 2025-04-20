@@ -11,18 +11,24 @@ import Article_P from './Article_P'
 import Topic from './Topic'
 import Articles from './Articles'
 import Quiz from './Quiz'
+import Pdf from './Pdf'
+import Notepad from './Notepad'
+import ToolBar from './Toolbar'
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
     <Routes>
-      <Route path="/" element = {<Topic/>}></Route>
+      <Route path="/" element = {<Feature/>}></Route>
       <Route path="/quiz" element = {<Quiz/>}></Route>
       <Route path="/c/Articles" element = {<Article_C/>}></Route>
       <Route path="/javascript/Articles" element = {<Article_J/>}></Route>
       <Route path="/python/Articles" element = {<Article_P/>}></Route>
       <Route path="/Articles" element = {<Articles/>}></Route>
+      <Route path="/pdf" element = {<Pdf/>}></Route>
+      <Route path="/note" element = {<Notepad/>}></Route>
+      <Route path="/topic" element = {<Topic/>}></Route>
     </Routes>
     </>
   )
