@@ -1,0 +1,41 @@
+.article-container {
+  display: flex;
+  height: 100vh;
+  background-color: #111;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.contents {
+  width: 25%;
+  border-right: 2px solid #444;
+  padding: 20px;
+}
+
+.contents ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: calc(100vh - 80px); 
+  overflow-y: auto;
+}
+
+.contents li {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.contents li.active {
+  font-weight: bold;
+}
+
+.content-display {
+  width: 75%;
+  padding: 20px;
+  overflow-y: auto; 
+   height: 100vh;    
+}
+
+.content-display p {
+  white-space: pre-line;
+}
