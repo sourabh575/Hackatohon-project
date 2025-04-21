@@ -22,6 +22,7 @@ function Quiz() {
   };
 
   return (
+    <div className= "biggest">
     <div className="quiz-container responsive">
       <div className="question-container">
         <h2 className="question">{currentQuestion.question}</h2>
@@ -61,6 +62,7 @@ function Quiz() {
           )}
         </div>
       )}
+    </div>
     </div>
   );
 }

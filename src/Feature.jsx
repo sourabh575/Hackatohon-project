@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate, Link  } from "react-router-dom"; 
 import "./CSS/Feature.css"; 
 
 const Feature = () => {
@@ -20,10 +20,10 @@ const Feature = () => {
         
         {features.map((feature, index) => (
           
-          <div key={index} className="feature-card"    onClick={() => navigate(feature.route)}>
+          <Link key={index} className="feature-card" to={feature.route} >
             <div className="feature-title">{feature.title}</div>
             <div className="feature-desc">{feature.description}</div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

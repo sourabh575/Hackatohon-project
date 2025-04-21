@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './Notepad.css';
+import './CSS/Notepad.css';
 
 function Notepad() {
   const [notes, setNotes] = useState([]);

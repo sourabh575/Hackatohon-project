@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import jsPDF from "jspdf";
-import './Pdf.css';
+import './CSS/Pdf.css';
 
 const initialMCQs = [
   {
@@ -73,7 +73,6 @@ export default function Pdf() {
 
   useEffect(() => {
     generatePDFPreview();
-    scrollToBottom();
   }, [mcqs]);
 
   const scrollToBottom = () => {
@@ -119,7 +118,7 @@ export default function Pdf() {
   const generatePDFContent = (doc) => {
     let y = 10;
     const pageHeight = doc.internal.pageSize.getHeight();
-  
+
     mcqs.forEach((q, i) => {
       if (y > pageHeight - 30) {
         doc.addPage();
@@ -127,7 +126,7 @@ export default function Pdf() {
       }
       doc.text(`${i + 1}) ${q.question}`, 10, y);
       y += 8;
-  
+
       q.options.forEach((opt, j) => {
         if (y > pageHeight - 20) {
           doc.addPage();
@@ -138,11 +137,10 @@ export default function Pdf() {
         doc.text(`   ${label}) ${opt} ${mark}`, 15, y);
         y += 7;
       });
-  
+
       y += 5;
     });
   };
-  
 
   const generatePDFPreview = () => {
     const doc = new jsPDF();
@@ -170,24 +168,22 @@ export default function Pdf() {
         <h2>JS MCQ Editor</h2>
         {mcqs.map((q, idx) => (
           <div key={idx} className="card">
-            <input
+            <textarea
               value={q.question}
-              style={{color : "white"}}
               onChange={(e) => updateQuestion(idx, e.target.value)}
               placeholder="Enter question"
+              rows={2}
             />
             {q.options.map((opt, i) => (
               <input
                 key={i}
                 value={opt}
-                style={{color : "white"}}
                 onChange={(e) => updateOption(idx, i, e.target.value)}
                 placeholder={`Option ${i + 1}`}
               />
             ))}
             <select
               value={q.correctAnswer}
-              style={{color : "white"}}
               onChange={(e) => updateCorrect(idx, e.target.value)}
             >
               <option value={0}>Correct: Option 1</option>
@@ -196,14 +192,14 @@ export default function Pdf() {
               <option value={3}>Correct: Option 4</option>
             </select>
             <div className="btns">
-              <button  id = "butt" onClick={() => deleteMCQ(idx)}>🗑 Delete</button>
+              <button id="butt" onClick={() => deleteMCQ(idx)}>🗑 Delete</button>
             </div>
           </div>
         ))}
         <div ref={endRef} />
         <div style={{ marginTop: "10px" }}>
-          <button onClick={addMCQ}>➕ Add Question</button>
-          <button onClick={downloadPDF} className="download">
+          <button onClick={addMCQ} className="leftBtn">➕ Add Question</button>
+          <button onClick={downloadPDF} className="download leftBtn">
             📄 Download PDF
           </button>
         </div>

@@ -1,49 +1,71 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./CSS/Article.css";
 import topicsInfo from "./DATA/C";
 
 function Article() {
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedTopic, setSelectedTopic] = useState("datatype");
 
-  const selectedTopicInfo = topicsInfo[selectedIndex];
+  // Load progress from localStorage
+  const [progress, setProgress] = useState(() => {
+    const saved = localStorage.getItem("topicProgress");
+    return saved ? JSON.parse(saved) : {};
+  });
 
-  const handleNext = () => {
-    if (selectedIndex < topicsInfo.length - 1) {
-      setSelectedIndex(selectedIndex + 1);
-    }
+  const handleSelect = (topicName) => {
+    setSelectedTopic(topicName);
+
+    const newProgress = {
+      ...progress,
+      [topicName]: true, // Mark as visited
+    };
+    setProgress(newProgress);
+    localStorage.setItem("topicProgress", JSON.stringify(newProgress));
   };
+
+  const selectedTopicInfo = topicsInfo.find(
+    (topic) => topic.topic === selectedTopic
+  );
 
   return (
     <div className="article-container">
-      {/* Side content */}
       <div className="contents">
         <h2>Contents</h2>
+        <div className="progress-bar-wrapper">
+          <p style={{ marginBottom: "6px", color: "#ccc" }}>
+            Progress: {Object.keys(progress).filter((key) => progress[key]).length} / {topicsInfo.length}
+          </p>
+          <div className="progress-bar-bg">
+            <div
+              className="progress-bar-fill"
+              style={{
+                width: `${
+                  (Object.keys(progress).filter((key) => progress[key]).length /
+                    topicsInfo.length) *
+                  100
+                }%`,
+              }}
+            ></div>
+          </div>
+        </div>
         <ul>
-          {topicsInfo.map((topic, index) => (
+          {topicsInfo.map((topic) => (
             <li
               key={topic.topic}
-              className={selectedIndex === index ? "active" : ""}
-              onClick={() => setSelectedIndex(index)}
+              className={`${selectedTopic === topic.topic ? "active" : ""} ${
+                progress[topic.topic] ? "completed" : ""
+              }`}
+              onClick={() => handleSelect(topic.topic)}
             >
-              {topic.topic}
+             {progress[topic.topic] ? "✅ " : ""}
+             {topic.topic}
             </li>
           ))}
         </ul>
       </div>
 
-      {/* Main content */}
       <div className="content-display">
         <h1>{selectedTopicInfo.topic}</h1>
         <p>{selectedTopicInfo.info}</p>
-
-        {/* Next Button */}
-        <button
-          className="next-button"
-          onClick={handleNext}
-          disabled={selectedIndex === topicsInfo.length - 1}
-        >
-          Next
-        </button>
       </div>
     </div>
   );

@@ -8,7 +8,11 @@
   max-width: 600px;
   margin: 20px auto; 
 }
-
+.biggest {
+  padding-top: 10%;
+  padding-bottom: 10%;
+  width: 100%;
+}
 @media (max-width: 480px) {
   .quiz-container {
     padding: 15px;

@@ -3,28 +3,10 @@ import Feature from "./Feature";
 import Article from "./Article_C";
 import React , {useState} from "react";
 
-function openthat(){
-
-}
 function Front(){
-  const [open, setOpen] = useState(false);
-  function openthat() {
-    setOpen(!open);
-  }
-
   return (
     <div>
-    <div>
-
-      <button onClick={openthat}>Click Me</button>
-      {open ? (
-        <ToolBar />
-      ) : (
-        <>
-        </>
-      )}
-    </div>
-     <Feature/>
+      hello
     </div>
   );
 }
