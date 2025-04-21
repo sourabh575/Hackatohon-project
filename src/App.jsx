@@ -1,8 +1,5 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './CSS/App.css'
-import Front from './Front'
 import { Route, Routes, Navigate } from 'react-router-dom'
 import Feature from './Feature'
 import Article_C from './Article_C'
@@ -13,31 +10,31 @@ import Articles from './Articles'
 import Quiz from './Quiz'
 import Pdf from './Pdf'
 import Notepad from './Notepad'
-import ToolBar from './Toolbar'
 import Signup from './Signup'
 import Signin from './Signin'
 import Token from './token'
+
 function App() {
-  const [count, setCount] = useState(0);
   const isLogin = Token.gettoken() ? true : false
   console.log('isLogin', isLogin)
 
   return (
     <>
-    <Routes>
-      <Route path="/" element = {<Feature/>}></Route>
-      <Route path="/signin" element = {<Signin/>}></Route>
-      <Route path="/note" element = {<Notepad/>}/>
-      <Route path="/quiz" element = {<Quiz/>}></Route>  
-      <Route path="/c/Articles" element = {<Article_C/>}></Route>
-      <Route path="/javascript/Articles" element = {<Article_J/>}></Route>
-      <Route path="/python/Articles" element = {<Article_P/>}></Route>
-      <Route path="/Articles" element = {<Articles/>}></Route>
-      <Route path="/pdf" element = {<Pdf/>}></Route>
-      <Route path="/note" element = {<Notepad/>}></Route>
-      <Route path="/topic" element = {<Topic/>}></Route>
-      <Route path="/signup" element = {<Signup/>}></Route>
-    </Routes>
+      <Routes>
+        <Route path="/" element={<Feature />} />
+        <Route path="/signin" element={isLogin ? <Navigate to="/" /> : <Signin />} />
+        <Route path="/signup" element={isLogin ? <Navigate to="/" /> : <Signup />} />
+        <Route path="/pdf" element={<Pdf />} />
+        <Route path="/Articles" element={<Articles />} />
+        <Route path="/c/Articles" element={<Article_C />} />
+        <Route path="/javascript/Articles" element={<Article_J />} />
+        <Route path="/python/Articles" element={<Article_P />} />
+
+        {/* Conditionally protected routes */}
+        <Route path="/note" element={isLogin ? <Notepad /> : <Navigate to="/signin" />} />
+        <Route path="/quiz" element={isLogin ? <Quiz /> : <Navigate to="/signin" />} />
+        <Route path="/topic" element={isLogin ? <Topic /> : <Navigate to="/signin" />} />
+      </Routes>
     </>
   )
 }

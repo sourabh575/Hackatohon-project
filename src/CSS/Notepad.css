@@ -2,6 +2,7 @@
 #container{
   overflow: hidden;
   display: flex;
+  flex-direction: column;
   margin: 0;
   padding: 0;
   height: 100vh;
@@ -26,7 +27,9 @@
   margin-top: 10px;
   font-size: 30px;
   position: relative;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   background-color:rgba(124, 153, 138, 0.381);
+  /* background-color: rgb(80, 110, 80); */
   color:white;
   border-radius:10px;
   padding:20px;
@@ -38,7 +41,8 @@
   border: 5px solid black;
   border-radius:10px;
   position: relative;
-  background-color:rgba(124, 153, 138, 0.381);
+  /*background-color:rgba(124, 153, 138, 0.381);*/
+  background-color: #1c1c1c;
   color:white;
   border-radius:30px;
   padding:20px;
@@ -47,12 +51,25 @@
 
 }
 #Add{
-  height: 50px;
+  height: 40px;
   width: 50px;
   border-radius: 15px;
   border: 2px solid whitesmoke;
-  padding:10px;
   background-color:#000000;
   color:white;
   margin-top: 5px;
+}
+#sidebar{
+  display: flex;
+  flex-direction: column;
+  background-color: #1c1c1c;
+  width: 20%;
+  height: 100%;
+  right: 0%;
+  border-radius: 10px;
+  position: absolute;
+}
+#sidebar div{
+  border-radius: 10px;
+  margin: 5px;
 }
