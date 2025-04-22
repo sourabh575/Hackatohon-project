@@ -18,13 +18,14 @@ import Background from './Background'
 import Front from './Front' 
 import Foter from './Foter'
 function App() {
-  const isLogin = Token.gettoken() ? true : false
+  const isLogin = Token.gettoken();
   console.log('isLogin', isLogin)
 
   return (
     <>
       <Routes>
         <Route path="/" element={<Front />} />
+        
         <Route path="/signin" element={isLogin ? <Navigate to="/" /> : <Signin />} />
         <Route path="/signup" element={isLogin ? <Navigate to="/" /> : <Signup />} />
         <Route path="/pdf" element={<Pdf />} />
@@ -34,11 +35,12 @@ function App() {
         <Route path="/c/Articles" element={<Article_C />} />
         <Route path="/javascript/Articles" element={<Article_J />} />
         <Route path="/python/Articles" element={<Article_P />} />
-
-        {/* Conditionally protected routes */}
-        <Route path="/note" element={isLogin ? <Notepad /> : <Navigate to="/signin" />} />
-        <Route path="/quiz" element={isLogin ? <Quiz /> : <Navigate to="/signin" />} />
-        <Route path="/topic" element={isLogin ? <Topic /> : <Navigate to="/signin" />} />
+        
+        <Route path="/note" element={<Notepad />} />
+        {/* <Route path="/note" element={isLogin ? <Notepad /> : <Navigate to="/signin" />} /> */}
+        {/* <Route path="/quiz" element={isLogin ? <Quiz /> : <Navigate to="/signin" />} /> */}
+        <Route path="/quiz" element={<Quiz/>}/>
+        <Route path="/topic" element={<Topic />}/>
       </Routes>
     </>
   )

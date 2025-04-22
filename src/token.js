@@ -1,10 +1,10 @@
-// your code goes here
 class Token {
+  static tok;
   static gettoken() {
-    return window.localStorage.getItem('TOKEN');
+    return this.tok;
   }
   static settoken(x) {
-    window.localStorage.setItem('TOKEN', x)
+    this.tok = x;
   }
 }
 

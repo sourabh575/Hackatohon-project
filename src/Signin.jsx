@@ -11,8 +11,9 @@ function Signin() {
   const call = () => {
     const raw = JSON.stringify({ email, password });
 
-    fetch("https://jlu-backend.onrender.com/api/users/login", {
+    fetch("https://jlu-backend-k6f7.onrender.com/api/users/login", {
       method: "POST",
+      credentials: 'include', 
       headers: { "Content-Type": "application/json" },
       body: raw
       
@@ -20,7 +21,7 @@ function Signin() {
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
-        Token.settoken(true);
+        Token.settoken(result.message);
         console.log(Token.gettoken());
 
         navigate('/');  

@@ -1,29 +1,58 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Cookies from 'js-cookie';
 import './CSS/Notepad.css';
+
 const myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
-function Sachin(){
-  console.log('hello')
-  const raw = "";
+function fetchNotesFromAPI() {
+  const requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+    credentials: 'include',
+  };
 
-const requestOptions = {
-  method: "GET",
-  headers: myHeaders,
-  redirect: "follow",
-  Credentials : 'include'
-};
-
-fetch("https://jlu-backend.onrender.com/api/users/getNotes", requestOptions)
-  .then((response) => response.text())
-  .then((result) => console.log(result))
-  .catch((error) => console.error(error));
-
+  return fetch("https://jlu-backend-k6f7.onrender.com/api/users/getNotes", requestOptions)
+    .then((response) => response.json())
+    .then((result) => {
+      if (Array.isArray(result.notes)) {
+        const noteContents = result.notes.map(note => note.content);
+        return noteContents;
+      } else {
+        console.error("Invalid notes format from API:", result);
+        return [];
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching notes from API:", error);
+      return [];
+    });
 }
+
+function addNoteToAPI(content) {
+  return fetch("https://jlu-backend-k6f7.onrender.com/api/users/addNote", {
+    method: "POST",
+    credentials: 'include',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ content })
+  })
+    .then(res => res.json())
+    .then(result => {
+      console.log("Note added to API:", result);
+      return result;
+    })
+    .catch(error => {
+      console.error("Error adding note to API:", error);
+    });
+}
+
 function Notepad() {
   const [notes, setNotes] = useState([]);
   const [activeNoteIndex, setActiveNoteIndex] = useState(null);
+  const hasFetchedFromAPI = useRef(false);
 
   useEffect(() => {
     const savedNotes = Cookies.get('notepad_notes');
@@ -36,15 +65,28 @@ function Notepad() {
       }
     }
   }, []);
+
   useEffect(() => {
     Cookies.set('notepad_notes', JSON.stringify(notes), { expires: 365 });
   }, [notes]);
 
-  function addNote() {
-    Sachin();
-    const updatedNotes = [...notes, ''];
-    setNotes(updatedNotes);
-    setActiveNoteIndex(updatedNotes.length - 1);
+  async function addNote() {
+    const newNote = "New note";
+
+    if (!hasFetchedFromAPI.current) {
+      const apiNotes = await fetchNotesFromAPI();
+      setNotes(apiNotes);
+      setActiveNoteIndex(apiNotes.length > 0 ? 0 : null);
+      hasFetchedFromAPI.current = true;
+    } else {
+      const result = await addNoteToAPI(newNote);
+
+      if (result) {
+        const updatedNotes = [...notes, newNote];
+        setNotes(updatedNotes);
+        setActiveNoteIndex(updatedNotes.length - 1);
+      }
+    }
   }
 
   function updateActiveNote(value) {
@@ -55,7 +97,6 @@ function Notepad() {
 
   return (
     <div id="container">
-      {/* Main Editor Area */}
       <div style={{ flex: 1, padding: '20px' }}>
         <h1 id='title'>Note Pad</h1>
         {activeNoteIndex !== null ? (
@@ -65,14 +106,17 @@ function Notepad() {
             className='textArea'
           />
         ) : (
-          <textarea value={"Select a note from the sidebar or create a new one."} className='textArea' readOnly />
+          <textarea
+            value={"Select a note from the sidebar or create a new one."}
+            className='textArea'
+            readOnly
+          />
         )}
         <button onClick={addNote} style={{ marginTop: '20px' }} id='Add'>
           Add Note
         </button>
       </div>
 
-      {/* Sidebar */}
       <div id='sidebar'>
         <h3>Notes</h3>
         {notes.map((note, index) => (

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom"; 
 import "./CSS/Background.css";
 
 function Background() {
@@ -11,17 +12,14 @@ function Background() {
 
   return (
     <div className="cover-page">
-      {/* Navbar */}
       <header className="navbar">
         <h1 className="logo">
           <em>Edugram</em>
         </h1>
         <nav className="nav-links">
-          <a href="#home" className="active">
-            Home
-          </a>
-          <a href="#features">Sign in</a>
-          <a href="#contact">Sign up</a>
+          <Link to="/signin" className="active">Home</Link>
+          <Link to="/signin">Sign in</Link>
+          <Link to="/signup">Sign up</Link>
         </nav>
       </header>
 
