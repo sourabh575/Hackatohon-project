@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import Token from './token';
-import './Signin.css'; // Make sure this file is in the same directory
+import './Signin.css';
 
 function Signin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate(); 
 
   const call = () => {
     const raw = JSON.stringify({ email, password });
@@ -13,12 +15,16 @@ function Signin() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: raw,
+      credentials : 'include'
+      
     })
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
         Token.settoken(result.token);
         console.log(Token.gettoken());
+
+        navigate('/');  
       })
       .catch((error) => console.error('Error:', error));
   };

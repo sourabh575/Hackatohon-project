@@ -1,12 +1,30 @@
 import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import './CSS/Notepad.css';
+const myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
 
+function Sachin(){
+  console.log('hello')
+  const raw = "";
+
+const requestOptions = {
+  method: "GET",
+  headers: myHeaders,
+  redirect: "follow",
+  Credentials : 'include'
+};
+
+fetch("https://jlu-backend.onrender.com/api/users/getNotes", requestOptions)
+  .then((response) => response.text())
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error));
+
+}
 function Notepad() {
   const [notes, setNotes] = useState([]);
   const [activeNoteIndex, setActiveNoteIndex] = useState(null);
 
-  // Load notes from cookies on mount
   useEffect(() => {
     const savedNotes = Cookies.get('notepad_notes');
     if (savedNotes) {
@@ -18,13 +36,12 @@ function Notepad() {
       }
     }
   }, []);
-
-  // Save notes to cookies whenever they change
   useEffect(() => {
     Cookies.set('notepad_notes', JSON.stringify(notes), { expires: 365 });
   }, [notes]);
 
   function addNote() {
+    Sachin();
     const updatedNotes = [...notes, ''];
     setNotes(updatedNotes);
     setActiveNoteIndex(updatedNotes.length - 1);
