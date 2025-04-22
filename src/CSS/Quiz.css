@@ -123,3 +123,26 @@
   color: #ccc;
   
 }
+.timer {
+  font-size: 18px;
+  color: #ff5722;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.scoreboard {
+  text-align: center;
+  padding: 2rem;
+  background-color: 121212;
+  border-radius: 10px;
+  margin-top: 2rem;
+}
+
+.scoreboard h2 {
+  font-size: 2rem;
+  color: #4caf50;
+}
+
+.scoreboard p {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
