@@ -14,7 +14,9 @@ import Signup from './Signup'
 import Signin from './Signin'
 import Token from './token'
 import Therapy from './Therapy'
-
+import Background from './Background'
+import Front from './Front' 
+import Foter from './Foter'
 function App() {
   const isLogin = Token.gettoken() ? true : false
   console.log('isLogin', isLogin)
@@ -22,12 +24,12 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Feature />} />
+        <Route path="/" element={<Front />} />
         <Route path="/signin" element={isLogin ? <Navigate to="/" /> : <Signin />} />
         <Route path="/signup" element={isLogin ? <Navigate to="/" /> : <Signup />} />
         <Route path="/pdf" element={<Pdf />} />
         
-        <Route path="/writing" element={<Therapy />} />
+        <Route path="/therapy" element={<Therapy   />} />
         <Route path="/Articles" element={<Articles />} />
         <Route path="/c/Articles" element={<Article_C />} />
         <Route path="/javascript/Articles" element={<Article_J />} />

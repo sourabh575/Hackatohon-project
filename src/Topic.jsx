@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ollama from 'ollama';
-import './CSS/topic.css';
+import './CSS/Topic.css';
 
 const Topic = () => {
   const [topic, setTopic] = useState('');
@@ -16,7 +16,7 @@ const Topic = () => {
   async function generateArticle(customPrompt, parameter) {
     try {
       const response = await ollama.chat({
-        model: `samantha-mistral`,
+        model: `gemma3:latest`,
         messages: [{ role: 'user', content: customPrompt }],
       });
       const content = response.message.content;

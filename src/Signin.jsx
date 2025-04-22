@@ -14,14 +14,13 @@ function Signin() {
     fetch("https://jlu-backend.onrender.com/api/users/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: raw,
-      credentials : 'include'
+      body: raw
       
     })
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
-        Token.settoken(result.token);
+        Token.settoken(true);
         console.log(Token.gettoken());
 
         navigate('/');  

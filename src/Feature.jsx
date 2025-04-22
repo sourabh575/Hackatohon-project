@@ -6,7 +6,7 @@ const Feature = () => {
   const navigate = useNavigate();
   const features = [
     { title: "Topic Mode", description: "Dive deep into specific topics" , route : "/topic" },
-    { title: "Writing Mode", description: "Create essays, articles, and notes" , route : "/writing" },
+    { title: "Therapy Ai", description: "Your Friendly Ai" , route : "/therapy" },
     { title: "Practice Quiz", description: "Test your knowledge with quick quizzes" , route : "/quiz"  },
     { title: "Read Articles", description: "Stay updated with curated articles" , route : "/Articles" },
     { title: "Pdf Creator", description: "Create pdf with this" , route : "/pdf" },
