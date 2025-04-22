@@ -29,7 +29,7 @@ function Signup() {
     };
 
     console.log(raw);
-    fetch("http://localhost:5000/api/users/register", requestOptions)
+    fetch("https://jlu-backend.onrender.com/api/users/register", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         console.log(result); 

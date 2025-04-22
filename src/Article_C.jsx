@@ -5,7 +5,6 @@ import topicsInfo from "./DATA/C";
 function Article() {
   const [selectedTopic, setSelectedTopic] = useState("datatype");
 
-  // Load progress from localStorage
   const [progress, setProgress] = useState(() => {
     const saved = localStorage.getItem("topicProgress");
     return saved ? JSON.parse(saved) : {};
@@ -16,7 +15,7 @@ function Article() {
 
     const newProgress = {
       ...progress,
-      [topicName]: true, // Mark as visited
+      [topicName]: true, 
     };
     setProgress(newProgress);
     localStorage.setItem("topicProgress", JSON.stringify(newProgress));
@@ -71,4 +70,4 @@ function Article() {
   );
 }
 
-export default Article;
+export default Article; 
