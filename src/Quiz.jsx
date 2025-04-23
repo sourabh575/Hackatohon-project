@@ -12,7 +12,21 @@ function Quiz() {
 
   const timerRef = useRef(null);
   const currentQuestion = allQuestions[currentQuestionIndex];
-
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        alert('Dont');
+      } else {
+        console.log('Welcome back to the tab!');
+      }
+    }
+  
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+  
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    }
+  }, []);
   useEffect(() => {
     setTimeLeft(10);
     timerRef.current = setInterval(() => {

@@ -71,7 +71,7 @@ function Notepad() {
   }, [notes]);
 
   async function addNote() {
-    const newNote = "New note";
+    const newNote = notes[activeNoteIndex];
 
     if (!hasFetchedFromAPI.current) {
       const apiNotes = await fetchNotesFromAPI();

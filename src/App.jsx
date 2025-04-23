@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './CSS/App.css'
 import { Route, Routes, Navigate } from 'react-router-dom'
 import Feature from './Feature'
@@ -17,30 +17,25 @@ import Therapy from './Therapy'
 import Background from './Background'
 import Front from './Front' 
 import Foter from './Foter'
-function App() {
-  const isLogin = Token.gettoken();
-  console.log('isLogin', isLogin)
 
+function App() {
+  const isLogin = Token.gettoken()
+  console.log('isLogin', isLogin)
   return (
     <>
       <Routes>
         <Route path="/" element={<Front />} />
-        
         <Route path="/signin" element={isLogin ? <Navigate to="/" /> : <Signin />} />
         <Route path="/signup" element={isLogin ? <Navigate to="/" /> : <Signup />} />
         <Route path="/pdf" element={<Pdf />} />
-        
-        <Route path="/therapy" element={<Therapy   />} />
+        <Route path="/therapy" element={<Therapy />} />
         <Route path="/Articles" element={<Articles />} />
         <Route path="/c/Articles" element={<Article_C />} />
         <Route path="/javascript/Articles" element={<Article_J />} />
         <Route path="/python/Articles" element={<Article_P />} />
-        
         <Route path="/note" element={<Notepad />} />
-        {/* <Route path="/note" element={isLogin ? <Notepad /> : <Navigate to="/signin" />} /> */}
-        {/* <Route path="/quiz" element={isLogin ? <Quiz /> : <Navigate to="/signin" />} /> */}
-        <Route path="/quiz" element={<Quiz/>}/>
-        <Route path="/topic" element={<Topic />}/>
+        <Route path="/quiz" element={<Quiz />} />
+        <Route path="/topic" element={<Topic />} />
       </Routes>
     </>
   )
