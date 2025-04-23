@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import Cookies from 'js-cookie';
+import Navbar from "./navbar.jsx";
 import './CSS/Notepad.css';
 
 const myHeaders = new Headers();
@@ -17,8 +18,7 @@ function fetchNotesFromAPI() {
     .then((response) => response.json())
     .then((result) => {
       if (Array.isArray(result.notes)) {
-        const noteContents = result.notes.map(note => note.content);
-        return noteContents;
+        return result.notes; // return full note object with id & content
       } else {
         console.error("Invalid notes format from API:", result);
         return [];
@@ -49,9 +49,25 @@ function addNoteToAPI(content) {
     });
 }
 
+function deleteNoteFromAPI(noteId) {
+  return fetch(`https://jlu-backend-k6f7.onrender.com/api/users/deleteNote/${noteId}`, {
+    method: "DELETE",
+    credentials: 'include',
+  })
+    .then(res => res.json())
+    .then(result => {
+      console.log("Note deleted from API:", result);
+      return result;
+    })
+    .catch(error => {
+      console.error("Error deleting note from API:", error);
+    });
+}
+
 function Notepad() {
   const [notes, setNotes] = useState([]);
   const [activeNoteIndex, setActiveNoteIndex] = useState(null);
+  const [sidebarVisible, setSidebarVisible] = useState(true);
   const hasFetchedFromAPI = useRef(false);
 
   useEffect(() => {
@@ -81,62 +97,91 @@ function Notepad() {
     } else {
       const result = await addNoteToAPI(newNote);
 
-      if (result) {
-        const updatedNotes = [...notes, newNote];
+      if (result && result.note) {
+        const updatedNotes = [...notes, result.note];
         setNotes(updatedNotes);
         setActiveNoteIndex(updatedNotes.length - 1);
       }
     }
   }
 
+  async function deleteNote(index, noteId) {
+    await deleteNoteFromAPI(noteId);
+    const updatedNotes = notes.filter((_, i) => i !== index);
+    setNotes(updatedNotes);
+    if (activeNoteIndex === index) {
+      setActiveNoteIndex(null);
+    } else if (activeNoteIndex > index) {
+      setActiveNoteIndex((prev) => prev - 1);
+    }
+  }
+
   function updateActiveNote(value) {
     const newNotes = [...notes];
-    newNotes[activeNoteIndex] = value;
+    newNotes[activeNoteIndex] = { ...newNotes[activeNoteIndex], content: value };
     setNotes(newNotes);
   }
 
   return (
-    <div id="container">
-      <div style={{ flex: 1, padding: '20px' }}>
-        <h1 id='title'>Note Pad</h1>
-        {activeNoteIndex !== null ? (
-          <textarea
-            value={notes[activeNoteIndex]}
-            onChange={(e) => updateActiveNote(e.target.value)}
-            className='textArea'
-          />
-        ) : (
-          <textarea
-            value={"Select a note from the sidebar or create a new one."}
-            className='textArea'
-            readOnly
-          />
-        )}
-        <button onClick={addNote} style={{ marginTop: '20px' }} id='Add'>
-          Add Note
+    <>
+      <Navbar />
+      <div id="container">
+        <button 
+          id="sidebar-toggle" 
+          onClick={() => setSidebarVisible(!sidebarVisible)}
+        >
+          {sidebarVisible ? '◀' : '▶'}
         </button>
-      </div>
 
-      <div id='sidebar'>
-        <h3>Notes</h3>
-        {notes.map((note, index) => (
-          <div
-            key={index}
-            onClick={() => setActiveNoteIndex(index)}
-            style={{
-              padding: '10px',
-              marginBottom: '10px',
-              backgroundColor: activeNoteIndex === index ? '#333' : '#222',
-              cursor: 'pointer',
-              borderRadius: '5px',
-              color: 'white',
-            }}
-          >
-            {note.slice(0, 20) || 'New Note'}
-          </div>
-        ))}
+        <div className={`main-content ${sidebarVisible ? 'compressed' : 'expanded'}`}>
+          <h1 id='title'>Note Pad</h1>
+          {activeNoteIndex !== null ? (
+            <textarea
+              value={notes[activeNoteIndex]?.content}
+              onChange={(e) => updateActiveNote(e.target.value)}
+              className='textArea'
+            />
+          ) : (
+            <textarea
+              value={"Select a note from the sidebar or create a new one."}
+              className='textArea'
+              readOnly
+            />
+          )}
+          <button onClick={addNote} id='Add'>Add Note</button>
+        </div>
+
+        <div id='sidebar' className={sidebarVisible ? 'visible' : 'hidden'}>
+          <h3>Notes</h3>
+          {notes.map((note, index) => (
+            <div
+              key={index}
+              className={activeNoteIndex === index ? 'active' : ''}
+            >
+              <div
+                onClick={() => setActiveNoteIndex(index)}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <span style={{ flex: 1 }}>{note.content.slice(0, 20) || 'New Note'}</span>
+                <span
+                  className="delete-icon"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteNote(index, note._id);
+                  }}
+                >
+                  🗑️
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

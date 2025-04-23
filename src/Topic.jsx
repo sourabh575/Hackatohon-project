@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ollama from 'ollama';
 import './CSS/Topic.css';
-
+import Navbar from "./navbar.jsx";
 const Topic = () => {
   const [topic, setTopic] = useState('');
   const [output, setOutput] = useState([]);
@@ -9,22 +9,30 @@ const Topic = () => {
   const [examples, setExamples] = useState(true);
   const [tone, setTone] = useState('formal');
   const [language, setLanguage] = useState('English');
-  const [maxLength, setMaxLength] = useState(500);
+  const [maxLength, setMaxLength] = useState(50);
   const [relatedTopics, setRelatedTopics] = useState(false);
   const [depth, setDepth] = useState('detailed');
+  const [loading, setLoading] = useState(false); 
 
   async function generateArticle(customPrompt, parameter) {
     try {
+      setLoading(true);
       const response = await ollama.chat({
-        model: `gemma3:latest`,
+        model: 'deepseek-r1:1.5b',
         messages: [{ role: 'user', content: customPrompt }],
       });
       const content = response.message.content;
-      setOutput((prevOutput) => [content, ...prevOutput]);
+  
+      const cleanedContent = content.replace(/<think>.*?<\/think>/gs, '').trim();
+      const result = cleanedContent.replace(/\*\*(.*?)\*\*/g, '');
+      setOutput((prevOutput) => [result, ...prevOutput]);
     } catch (error) {
       setOutput((prevOutput) => ['Error: ' + error.message, ...prevOutput]);
+    } finally {
+      setLoading(false);
     }
   }
+  
 
   const handleGenerate = () => {
     const customPrompt = `
@@ -41,6 +49,8 @@ Start your explanation below:
   };
 
   return (
+    <div>
+      <Navbar/>
     <div className="topic-container">
       <div className="topic-card">
         <h2 className="topic-title">Topic Mode</h2>
@@ -122,18 +132,24 @@ Start your explanation below:
         <button onClick={handleGenerate} className="topic-button">
           Generate
         </button>
-        <div id="outputBox">
-          {output.map((item, index) => (
-            <div className="topic-output-box" key={index}>
-              {item ? (
-                <p>{item}</p>
-              ) : (
-                <p className="topic-placeholder">Generated text will appear here...</p>
-              )}
-            </div>
-          ))}
-        </div>
+
+        {loading ? (
+          <div className="loading-text">Generating...</div>
+        ) : (
+          <div id="outputBox">
+            {output.map((item, index) => (
+              <div className="topic-output-box" key={index}>
+                {item ? (
+                  <p>{item}</p>
+                ) : (
+                  <p className="topic-placeholder">Generated text will appear here...</p>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
+    </div>
     </div>
   );
 };

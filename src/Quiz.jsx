@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './CSS/Quiz.css';
 import allQuestions from './DATA/Q';
+import { useNavigate } from 'react-router-dom'; 
 
 function Quiz() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -10,25 +11,35 @@ function Quiz() {
   const [correctCount, setCorrectCount] = useState(0);
   const [quizFinished, setQuizFinished] = useState(false);
 
+  const [eventCount, setEventCount] = useState(0); 
   const timerRef = useRef(null);
   const currentQuestion = allQuestions[currentQuestionIndex];
+
+  const navigate = useNavigate(); 
+
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.hidden) {
-        alert('Dont');
+        setEventCount((prevCount) => prevCount + 1); 
+        alert('You switched tabs!');
       } else {
         console.log('Welcome back to the tab!');
       }
-    }
-  
+
+      if (eventCount >= 2) {
+        navigate('/signin'); 
+      }
+    };
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
-  
+
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
-    }
-  }, []);
+    };
+  }, [eventCount, navigate]);
+
   useEffect(() => {
-    setTimeLeft(10);
+    setTimeLeft(10); 
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => prev - 1);
     }, 1000);
@@ -38,7 +49,7 @@ function Quiz() {
 
   useEffect(() => {
     if (timeLeft === 0 && selectedOption === null) {
-      handleNext(); // Auto move if not answered
+      handleNext(); 
     }
   }, [timeLeft]);
 

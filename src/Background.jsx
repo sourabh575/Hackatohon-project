@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom"; 
 import "./CSS/Background.css";
-
+import Navbar from "./navbar.jsx";
 function Background() {
   const scrollToBottom = () => {
     window.scrollTo({
@@ -12,17 +12,8 @@ function Background() {
 
   return (
     <div className="cover-page">
-      <header className="navbar">
-        <h1 className="logo">
-          <em>Edugram</em>
-        </h1>
-        <nav className="nav-links">
-          <Link to="/signin" className="active">Home</Link>
-          <Link to="/signin">Sign in</Link>
-          <Link to="/signup">Sign up</Link>
-        </nav>
-      </header>
-
+      
+            <Navbar/>
       <main className="main-content">
         <h2
           className="title"

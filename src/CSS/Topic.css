@@ -65,14 +65,15 @@
 .topic-output-box {
   background-color: #2c2c2c;
   color: #ffffff;
-  padding: 22px;
+  padding: 5%; 
   margin-top: 2%;
   border-radius: 14px;
   min-height: 200px; 
-  padding-right: 0px;
+  padding-right: 0px; 
   text-align: left;
   overflow-y: auto;
 }
+
 
 .topic-placeholder {
   color: #777777;
