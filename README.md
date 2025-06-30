@@ -75,7 +75,7 @@ EDU_GRAM is a comprehensive personalized learning platform that combines AI-powe
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/EDU_GRAM.git
+   git clone https://github.com/sourabh575/Edugram
    cd EDU_GRAM
    ```
 
